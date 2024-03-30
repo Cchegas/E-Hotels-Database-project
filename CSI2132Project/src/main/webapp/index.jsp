@@ -1,7 +1,11 @@
 <%@ page import="com.demo.LayoutService" %>
 <%@ page import="com.demo.Pair" %>
 <%@ page import="com.demo.Message" %>
+<%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="com.demo.Customer" %>
+<%@ page import="com.demo.CustomerService" %>
+<%@ page import="com.demo.RoomService" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%
@@ -33,6 +37,11 @@
     } catch (Exception e) {
         e.printStackTrace();
     }
+
+    // Retrieve rooms based on search criteria
+    RoomService roomService= new RoomService();
+    List<Object[]> rooms = roomService.getHotelCapacity();
+    List<Object[]> availableRooms = roomService.getHotelCounts();
 %>
 
 <!DOCTYPE html>
@@ -53,41 +62,99 @@
     <jsp:include page="navbar.jsp"/>
 
     <%-- User Selection Form --%>
-    <div class="container mt-5">
-        <form action="index.jsp" method="post">
-            <div class="mb-3">
-                <label for="username" class="form-label">Select User:</label>
-                <select class="form-select" name="username" id="username">
-                    <option value="user1">Customer</option>
-                    <option value="user2">Employee</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Login</button>
-        </form>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <form action="index.jsp" method="post">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Customer Login:</label>
+                    <select name="customerID" class="form-select">
+                        <%
+                            CustomerService customerService = new CustomerService();
+                            List<Customer> customers = customerService.getAllCustomers();
+                            for (Customer customer : customers) {
+                        %>
+                        <option value="<%= customer.getCustomerID() %>"><%= customer.getFirstName() %> <%= customer.getLastName() %></option>
+                        <% } %>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <form action="index.jsp" method="post">
+                <div class="mb-3">
+                    <label for="username1" class="form-label">Employee Login:</label>
+                </div>
+                <input type="hidden" id="EmployeeLogin" name="customerID" value="-1">
+                <button type="submit" class="btn btn-primary">Employee Login</button>
+            </form>
+        </div>
     </div>
+</div>
+
 
     <%-- Check if username is user1 or user2 to enable/disable features --%>
-    <% if (request.getParameter("username") != null) {
-        String username = request.getParameter("username");
-        boolean isUser1 = "user1".equals(username);
-        boolean isUser2 = "user2".equals(username);
+    <% if (request.getParameter("customerID") != null) {
+        int userID = Integer.parseInt(request.getParameter("customerID"));
     %>
 
     <div class="container mt-5">
         <div class="row">
-            <% if (isUser1) { %>
+            <% if (userID>0) { %>
 
             <div class="col-md-4">
                 <div class="card" id="card-container-layout">
                     <div class="card-body" id="card">
                         <h4 class="card-title">Booking</h4>
                         <p class="card-text" id="paragraph">Customer Booking<br></p>
-                        <a class="btn btn-primary" id="show-btn" href="booking.jsp">My Booking</a>
+                        <a class="btn btn-primary" id="show-btn" href="booking.jsp?username=<%= request.getParameter("customerID") %>">My Booking</a>
                     </div>
                 </div>
             </div>
 
-            <% } else if (isUser2) { %>
+
+            <div class="col-md-12">
+                    <div class="card" id="card-container-layout">
+                        <div class="card-body" id="card">
+                            <h3>Hotel Capacity</h3>
+                                <table border="1">
+                                    <tr>
+                                        <th>Hotel Name</th>
+                                        <th>Total Capacity</th>
+                                     </tr>
+                                <% for (Object[] room : rooms) {  %>
+                                    <tr>
+                                        <td><%= room[0] %></td>
+                                        <td><%= room[1] %></td>
+                                    </tr>
+                                    <% } %>
+                                </table>
+                        </div>
+                    </div>
+            </div>
+            <div class="col-md-12">
+                    <div class="card" id="card-container-layout">
+                        <div class="card-body" id="card">
+                            <h3>Available Rooms</h3>
+                                <table border="1">
+                                    <tr>
+                                        <th>Area</th>
+                                        <th>Available Rooms</th>
+                                     </tr>
+                                <% for (Object[] room : availableRooms) {  %>
+                                    <tr>
+                                        <td><%= room[0] %></td>
+                                        <td><%= room[1] %></td>
+                                    </tr>
+                                    <% } %>
+                                </table>
+                        </div>
+                    </div>
+            </div>
+
+
+            <% } else if (userID<0) { %>
             <div class="col-md-4">
                 <div class="card" id="card-container-layout">
                     <div class="card-body" id="card">
@@ -107,21 +174,21 @@
                 </div>
             </div>
             <div class="col-md-4">
-
-            <div class="card" id="card-container-layout">
-                    <div class="card-body" id="card">
-                        <h4 class="card-title">Renting</h4>
-                        <p class="card-text" id="paragraph">Renting management<br></p>
-                        <a class="btn btn-primary" id="show-btn" href="renting.jsp">View</a>
-                    </div>
+                <div class="card" id="card-container-layout">
+                        <div class="card-body" id="card">
+                            <h4 class="card-title">Renting</h4>
+                            <p class="card-text" id="paragraph">Renting management<br></p>
+                            <a class="btn btn-primary" id="show-btn" href="renting.jsp">View</a>
+                        </div>
                 </div>
             </div>
-            <div class="card" id="card-container-layout">
-                    <div class="card-body" id="card">
-                        <h4 class="card-title">Customer</h4>
-                        <p class="card-text" id="paragraph">Customer management<br></p>
-                        <a class="btn btn-primary" id="show-btn" href="customer.jsp">View</a>
-                    </div>
+            <div class="col-md-4">
+                <div class="card" id="card-container-layout">
+                        <div class="card-body" id="card">
+                            <h4 class="card-title">Customer</h4>
+                            <p class="card-text" id="paragraph">Customer management<br></p>
+                            <a class="btn btn-primary" id="show-btn" href="customer.jsp">View</a>
+                        </div>
                 </div>
             </div>
 

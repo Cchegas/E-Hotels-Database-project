@@ -12,8 +12,8 @@ public class HotelService {
 
     // Method to insert a new hotel
     public void insertHotel(Hotel hotel)  throws Exception {
-        String sql = "INSERT INTO hotels (chainID, name, category, numberOfRooms, address, contactEmail, phoneNumber) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO hotels (chainID, name, category, numberOfRooms, address, area,  contactEmail, phoneNumber) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?,?)";
         ConnectionDB db = new ConnectionDB();
         // try connect to database, catch any exceptions
         try (Connection con = db.getConnection()) {
@@ -24,8 +24,9 @@ public class HotelService {
             statement.setInt(3, hotel.getCategory());
             statement.setInt(4, hotel.getNumberOfRooms());
             statement.setString(5, hotel.getAddress());
-            statement.setString(6, hotel.getContactEmail());
-            statement.setString(7, hotel.getPhoneNumber());
+            statement.setString(6, hotel.getArea());
+            statement.setString(7, hotel.getContactEmail());
+            statement.setString(8, hotel.getPhoneNumber());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -95,6 +96,7 @@ public class HotelService {
                 hotel.setCategory(resultSet.getInt("category"));
                 hotel.setNumberOfRooms(resultSet.getInt("numberOfRooms"));
                 hotel.setAddress(resultSet.getString("address"));
+                hotel.setArea(resultSet.getString("area"));
                 hotel.setContactEmail(resultSet.getString("contactEmail"));
                 hotel.setPhoneNumber(resultSet.getString("phoneNumber"));
                 hotels.add(hotel);
@@ -104,4 +106,27 @@ public class HotelService {
         }
         return hotels;
     }
+
+    public List<Object[]> getAllHotelsChain()  throws Exception {
+        List<Object[]> dataList = new ArrayList<>();
+
+        String sql = "SELECT * FROM hotelchain";
+
+        ConnectionDB db = new ConnectionDB();
+        // try connect to database, catch any exceptions
+        try (Connection con = db.getConnection()) {
+            // prepare statement
+            PreparedStatement stmt = con.prepareStatement(sql);
+            // get the results from executing the query
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()) {
+                dataList.add(new Object[]{resultSet.getInt("chainID"), resultSet.getString("name")});
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return dataList;
+    }
+
 }

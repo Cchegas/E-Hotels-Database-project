@@ -19,10 +19,11 @@
             int category = Integer.parseInt(request.getParameter("category"));
             int numberOfRooms = Integer.parseInt(request.getParameter("numberOfRooms"));
             String address = request.getParameter("address");
+            String area = request.getParameter("area");
             String contactEmail = request.getParameter("contactEmail");
             String phoneNumber = request.getParameter("phoneNumber");
 
-            Hotel newHotel = new Hotel(chainID, name, category, numberOfRooms, address, contactEmail, phoneNumber);
+            Hotel newHotel = new Hotel(chainID, name, category, numberOfRooms, address, area,  contactEmail, phoneNumber);
             hotelService.insertHotel(newHotel);
 
         } else if (action.equals("update")) {
@@ -36,7 +37,7 @@
             String contactEmail = request.getParameter("contactEmail");
             String phoneNumber = request.getParameter("phoneNumber");
 
-            Hotel updatedHotel = new Hotel( chainID, name, category, numberOfRooms, address, contactEmail, phoneNumber);
+            Hotel updatedHotel = new Hotel( chainID, name, category, numberOfRooms, address, "area", contactEmail, phoneNumber);
             hotelService.updateHotel(hotelID, updatedHotel);
         } else if (action.equals("delete")) {
             // Delete a hotel
@@ -66,6 +67,7 @@
         Category: <input type="text" name="category" required><br>
         Number of Rooms: <input type="text" name="numberOfRooms" required><br>
         Address: <input type="text" name="address" required><br>
+        Area: <input type="text" name="area" required><br>
         Contact Email: <input type="email" name="contactEmail" required><br>
         Phone Number: <input type="text" name="phoneNumber" required><br>
         <input type="hidden" name="action" value="insert">
@@ -85,6 +87,7 @@
             <th>Category</th>
             <th>Number of Rooms</th>
             <th>Address</th>
+            <th>area</th>
             <th>Contact Email</th>
             <th>Phone Number</th>
             <th>Action</th>
@@ -97,6 +100,7 @@
                 <td><%= hotel.getCategory() %></td>
                 <td><%= hotel.getNumberOfRooms() %></td>
                 <td><%= hotel.getAddress() %></td>
+                <td><%= hotel.getArea() %></td>
                 <td><%= hotel.getContactEmail() %></td>
                 <td><%= hotel.getPhoneNumber() %></td>
                 <td>

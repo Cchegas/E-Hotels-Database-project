@@ -1,28 +1,47 @@
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="com.demo.HotelService" %>
 <%@ page import="com.demo.Room" %>
 <%@ page import="com.demo.RoomService" %>
 <%@ page import="com.demo.Booking" %>
 <%@ page import="com.demo.BookingService" %>
 <%@ page import="java.sql.Date" %>
+<%@ page import="java.time.LocalDate" %>
 
 <%
     RoomService roomService = new RoomService();
     BookingService bookingService = new BookingService();
 
+    String username = request.getParameter("username");
+
     // Retrieve parameters for room search
 
-    Date searchStartDate = request.getParameter("searchStartDate") != null ? Date.valueOf(request.getParameter("searchStartDate")) : null;
-    Date searchEndDate = request.getParameter("searchEndDate") != null ? Date.valueOf(request.getParameter("searchEndDate")) : null;
-    double maxPrice = request.getParameter("maxPrice") != null ? Double.parseDouble(request.getParameter("maxPrice")) : Double.MAX_VALUE;
-    int roomCapacity = request.getParameter("roomCapacity") != null ? Integer.parseInt(request.getParameter("roomCapacity")) : 0;
-    String area = request.getParameter("area");
-    int hotelChainID = request.getParameter("hotelChainID") != null ? Integer.parseInt(request.getParameter("hotelChainID")) : 0;
-    int hotelCategory = request.getParameter("hotelCategory") != null ? Integer.parseInt(request.getParameter("hotelCategory")) : 0;
-    int numRooms = request.getParameter("numRooms") != null ? Integer.parseInt(request.getParameter("numRooms")) : 0;
+    Date searchStartDate = Date.valueOf(LocalDate.now());
+    Date searchEndDate = Date.valueOf(LocalDate.now());
+    double maxPrice = 1000.00;
+    int roomCapacity = 2;
+    String area = "Ottawa";
+    int hotelChainID = 1;
+    int hotelCategory = 1;
+    int numRooms = 1;
 
     // Retrieve rooms based on search criteria
-    List<Room> rooms = roomService.searchRooms(searchStartDate,searchEndDate,maxPrice,roomCapacity,area,hotelChainID,hotelCategory,numRooms);
+    List<Object[]> rooms = roomService.searchRooms(searchStartDate,searchEndDate,maxPrice,roomCapacity,area,hotelChainID,hotelCategory,numRooms);
 
+    // Search a room
+    if (request.getParameter("action") != null && request.getParameter("action").equals("search")) {
+         searchStartDate = Date.valueOf(request.getParameter("searchStartDate")) ;
+         searchEndDate = Date.valueOf(request.getParameter("searchEndDate")) ;
+         maxPrice = Double.parseDouble(request.getParameter("maxPrice")) ;
+         roomCapacity = Integer.parseInt(request.getParameter("roomCapacity")) ;
+         area = request.getParameter("area");
+         hotelChainID = Integer.parseInt(request.getParameter("hotelChainID")) ;
+         hotelCategory = Integer.parseInt(request.getParameter("hotelCategory")) ;
+         numRooms = Integer.parseInt(request.getParameter("numRooms"));
+
+        // Retrieve rooms based on search criteria
+         rooms = roomService.searchRooms(searchStartDate,searchEndDate,maxPrice,roomCapacity,area,hotelChainID,hotelCategory,numRooms);
+    }
 
     // List all existing bookings
     List<Booking> bookings = bookingService.getAllBookings();
@@ -54,23 +73,47 @@
     <title>Booking Management</title>
 </head>
 <body>
+<jsp:include page="navbar.jsp"/>
 
 <h1>Booking Management</h1>
-    <jsp:include page="navbar.jsp"/>
+
 
 <div style="display: flex;">
     <!-- Search Rooms -->
     <div style="flex: 1; padding-right: 20px;">
         <h2>Search Rooms</h2>
-        <form action="booking.jsp" method="get">
-            Start Date: <input type="date" name="searchStartDate" value="<%= request.getParameter("searchStartDate") %>"><br>
-            End Date: <input type="date" name="searchEndDate" value="<%= request.getParameter("searchEndDate") %>"><br>
-            Max Price: <input type="text" name="maxPrice" value="<%= request.getParameter("maxPrice") %>"><br>
-            Room Capacity: <input type="text" name="roomCapacity" value="<%= request.getParameter("roomCapacity") %>"><br>
-            Area: <input type="text" name="area" value="<%= request.getParameter("area") %>"><br>
-            Hotel Chain ID: <input type="text" name="hotelChainID" value="<%= request.getParameter("hotelChainID") %>"><br>
-            Hotel Category: <input type="text" name="hotelCategory" value="<%= request.getParameter("hotelCategory") %>"><br>
-            Number of Rooms: <input type="text" name="numRooms" value="<%= request.getParameter("numRooms") %>"><br>
+        <form action="booking.jsp" method="post">
+            <input type="hidden" id="searchAction" name="action" value="search">
+
+            Start Date: <input type="date" name="searchStartDate" value="<%= searchStartDate %>"><br>
+            End Date: <input type="date" name="searchEndDate" value="<%= searchEndDate %>"><br>
+            Max Price: <input type="text" name="maxPrice" value="<%= maxPrice %>"><br>
+            Room Capacity: <input type="text" name="roomCapacity" value="<%= roomCapacity %>"><br>
+            Area: <input type="text" name="area" value="<%= area %>"><br>
+
+            Hotel Chain:
+                 <select name="hotelChainID">
+                     <%
+                         HotelService hotelService = new HotelService();
+                         // Assuming you have a list of customers available
+                         // Replace this with your actual list of customers
+                         //List<Customer> customers = customerService.getAllCustomers();
+                         List<Object[]> dataList = hotelService.getAllHotelsChain();
+                         for (Object[] data : dataList) {
+                     %>
+                     <option value="<%= (int) data[0] %>"><%= (String) data[1] %> </option>
+                     <% } %>
+                 </select><br>
+
+            Hotel Category:
+                <select name="hotelCategory">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select><br>
+            Number of Rooms: <input type="text" name="numRooms" value="<%= numRooms %>"><br>
             <input type="submit" value="Search">
         </form>
 
@@ -78,28 +121,30 @@
         <table border="1">
             <tr>
                 <th>Room ID</th>
-                <th>Hotel ID</th>
+                <th>Hotel Name</th>
                 <th>Room Number</th>
                 <th>Price</th>
                 <th>Capacity</th>
                 <th>Views</th>
                 <th>Problems</th>
                 <th>Pet Friendly</th>
+                <th>Hotel Address</th>
                 <th>Action</th>
              </tr>
-        <% for (Room room : rooms) { %>
+        <% for (Object[] room : rooms) {  %>
             <tr>
-                <td><%= room.getRoomID() %></td>
-                <td><%= room.getHotelID() %></td>
-                <td><%= room.getRoomNumber() %></td>
-                <td><%= room.getPrice() %></td>
-                <td><%= room.getCapacity() %></td>
-                <td><%= room.getViews() %></td>
-                <td><%= room.isProblems() %></td>
-                <td><%= room.isPetFriendly() %></td>
+                <td><%= room[0] %></td>
+                <td><%= room[8] %></td>
+                <td><%= room[2] %></td>
+                <td><%= room[3] %></td>
+                <td><%= room[4] %></td>
+                <td><%= room[5] %></td>
+                <td><%= room[6] %></td>
+                <td><%= room[7] %></td>
+                <td><%= room[9] %></td>
                     <td>
                         <form action="booking.jsp" method="post">
-                            <input type="hidden" name="roomID" value="<%= room.getRoomID() %>">
+                            <input type="hidden" name="roomID" value="<%= room[0] %>">
                             <input type="hidden" name="customerID" value="2"> <!-- Assuming customerID is 1 for now -->
                             <input type="hidden" name="startDate" value="<%= searchStartDate %>">
                             <input type="hidden" name="endDate" value="<%= searchEndDate %>"> <!-- Assuming same start and end date for now -->

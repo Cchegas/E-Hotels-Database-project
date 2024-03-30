@@ -1,4 +1,9 @@
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
+
+<%@ page import="com.demo.Customer" %>
+<%@ page import="com.demo.CustomerService" %>
+
 <%@ page import="com.demo.Room" %>
 <%@ page import="com.demo.RoomService" %>
 <%@ page import="com.demo.Booking" %>
@@ -6,24 +11,35 @@
 <%@ page import="com.demo.Renting" %>
 <%@ page import="com.demo.RentingService" %>
 <%@ page import="java.sql.Date" %>
+<%@ page import="java.time.LocalDate" %>
 
 <%
     RoomService roomService = new RoomService();
     BookingService bookingService = new BookingService();
     RentingService rentingService = new RentingService();
 
-    // Retrieve parameters for room search
-    Date searchStartDate = request.getParameter("searchStartDate") != null ? Date.valueOf(request.getParameter("searchStartDate")) : null;
-    Date searchEndDate = request.getParameter("searchEndDate") != null ? Date.valueOf(request.getParameter("searchEndDate")) : null;
+    //Date searchStartDate =  request.getParameter("searchStartDate") != null ? Date.valueOf(request.getParameter("searchStartDate")) : null;
+    //Date searchEndDate =  request.getParameter("searchEndDate") != null ? Date.valueOf(request.getParameter("searchEndDate")) : null;
+    Date searchStartDate =  Date.valueOf(LocalDate.now());
+    Date searchEndDate = Date.valueOf(LocalDate.now());
+    //List<Room> rooms = roomService.searchRoomsbyDates(searchStartDate, searchEndDate);
+    List<Room> rooms = new ArrayList<Room>();;
 
-    // Retrieve rooms based on search criteria
-    List<Room> rooms = roomService.searchRoomsbyDates(searchStartDate, searchEndDate);
 
     // List all existing bookings
     List<Booking> bookings = bookingService.getAllBookings();
 
     // List all rentings
     List<Renting> rentings = rentingService.getAllRentings();
+
+    // Search room by dates
+    if (request.getParameter("action") != null && request.getParameter("action").equals("search")) {
+        // Retrieve parameters for room search
+        searchStartDate =  Date.valueOf(request.getParameter("searchStartDate")) ;
+        searchEndDate =  Date.valueOf(request.getParameter("searchEndDate")) ;
+        // Retrieve rooms based on search criteria
+        rooms = roomService.searchRoomsbyDates(searchStartDate, searchEndDate);
+    }
 
     // Check in a booking
     if (request.getParameter("action") != null && request.getParameter("action").equals("checkin")) {
@@ -41,15 +57,17 @@
         response.sendRedirect("renting.jsp");
     }
 
-    // Book a room
-    if (request.getParameter("action") != null && request.getParameter("action").equals("book")) {
+    // Rent a room
+    if (request.getParameter("action") != null && request.getParameter("action").equals("rent")) {
         int roomID = Integer.parseInt(request.getParameter("roomID"));
         int customerID = Integer.parseInt(request.getParameter("customerID"));
         Date startDate = Date.valueOf(request.getParameter("startDate"));
         Date endDate = Date.valueOf(request.getParameter("endDate"));
-        double depositAmount = Double.parseDouble(request.getParameter("depositAmount"));
-        Booking newBooking = new Booking(roomID, customerID, startDate, endDate, depositAmount);
-        bookingService.insertBooking(newBooking);
+        String paymentMethod = request.getParameter("paymentMethod");
+        double paymentAmount = Double.parseDouble(request.getParameter("paymentAmount"));
+
+        Renting newRenting = new Renting(roomID, customerID, startDate, endDate, paymentMethod , paymentAmount);
+        rentingService.insertRenting(newRenting);
         // Redirect after booking
         response.sendRedirect("renting.jsp");
     }
@@ -67,9 +85,11 @@
     <!-- Search Rooms -->
     <div style="flex: 1; padding-right: 20px;">
         <h2>Available Rooms</h2>
-        <form action="renting.jsp" method="get">
-            Start Date: <input type="date" name="searchStartDate"><br>
-            End Date: <input type="date" name="searchEndDate"><br>
+        <form action="renting.jsp" method="post">
+            <input type="hidden" id="searchAction" name="action" value="search">
+
+            Start Date: <input type="date" name="searchStartDate" value="<%= (request.getAttribute("searchStartDate") != null) ?  Date.valueOf(request.getParameter("searchStartDate"))  : java.time.LocalDate.now()  %>"><br>
+            End Date: <input type="date" name="searchEndDate" value="<%= java.time.LocalDate.now() %>"><br>
             <input type="submit" value="Search">
         </form>
 
@@ -105,13 +125,30 @@
     </div>
 
 
- <!-- Hidden Update Form -->
+ <!-- Hidden Renting Form -->
  <div id="rentingForm" class="update-form">
      <form action="renting.jsp" method="post">
          <input type="hidden" id="rentAction" name="action" value="rent">
-         <input type="hidden" id="updateCustomerID" name="customerID">
-         First Name: <input type="text" id="updateFirstName" name="firstName"><br>
-         Last Name: <input type="text" id="updateLastName" name="lastName"><br>
+         <input type="hidden" id="rentRoomID" name="roomID" >
+         <input type="hidden" id="rentStartDate"  name="startDate" >
+         <input type="hidden" id="rentEndDate"  name="endDate" >
+
+        <!-- Dropdown for selecting customer -->
+        Customer:
+        <select name="customerID">
+            <%
+                CustomerService customerService = new CustomerService();
+                // Assuming you have a list of customers available
+                // Replace this with your actual list of customers
+                List<Customer> customers = customerService.getAllCustomers();
+                for (Customer customer : customers) {
+            %>
+            <option value="<%= customer.getCustomerID() %>"><%= customer.getFirstName() %> <%= customer.getLastName() %></option>
+            <% } %>
+        </select>
+        <br>
+         Payment Method: <input type="text" id="paymentMethodRent" name="paymentMethod"><br>
+         Payment Amount: <input type="text" id="paymentAmountRent" name="paymentAmount"><br>
          <input type="submit" value="Rent">
          <button type="button" onclick="cancelUpdate()">Cancel</button>
      </form>
@@ -175,7 +212,7 @@
 
 
 
- <!-- Hidden Update Form -->
+ <!-- Hidden Check In Form -->
  <div id="checkinForm" class="update-form">
      <form action="renting.jsp" method="post">
          <input type="hidden" id="checkinAction" name="action" value="checkin">
@@ -197,7 +234,11 @@
 
  <!-- JavaScript to handle popup and form filling -->
  <script>
-     function openRentForm(rooID,searchStartDate, searchEndDate) {
+     function openRentForm(roomID,searchStartDate, searchEndDate) {
+           document.getElementById('rentRoomID').value = roomID;
+           document.getElementById('rentStartDate').value = searchStartDate;
+           document.getElementById('rentEndDate').value = searchEndDate;
+
          document.getElementById('rentingForm').style.display = 'block';
      }
 
