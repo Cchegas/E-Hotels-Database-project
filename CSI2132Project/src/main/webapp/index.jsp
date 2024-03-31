@@ -64,7 +64,7 @@
     <%-- User Selection Form --%>
 <div class="container mt-5">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <form action="index.jsp" method="post">
                 <div class="mb-3">
                     <label for="username" class="form-label">Customer Login:</label>
@@ -78,14 +78,21 @@
                         <% } %>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">Login</button>
+                <button type="submit" class="btn btn-primary">Customer Login</button>
             </form>
         </div>
-        <div class="col-md-6">
+
+                <div class="col-md-4">
+                    <form action="index.jsp" method="post">
+                    </form>
+                </div>
+
+        <div class="col-md-4">
             <form action="index.jsp" method="post">
                 <div class="mb-3">
                     <label for="username1" class="form-label">Employee Login:</label>
                 </div>
+                Password: <input type="text" name="fakepassword" value="********"> <br>
                 <input type="hidden" id="EmployeeLogin" name="customerID" value="-1">
                 <button type="submit" class="btn btn-primary">Employee Login</button>
             </form>
@@ -106,18 +113,17 @@
             <div class="col-md-4">
                 <div class="card" id="card-container-layout">
                     <div class="card-body" id="card">
-                        <h4 class="card-title">Booking</h4>
+                        <h4 class="card-title" style="color: red;">Booking</h4>
                         <p class="card-text" id="paragraph">Customer Booking<br></p>
                         <a class="btn btn-primary" id="show-btn" href="booking.jsp?username=<%= request.getParameter("customerID") %>">My Booking</a>
                     </div>
                 </div>
             </div>
 
-
-            <div class="col-md-12">
+            <div class="col-md-4">
                     <div class="card" id="card-container-layout">
                         <div class="card-body" id="card">
-                            <h3>Hotel Capacity</h3>
+                            <h4>Hotel Capacity</h4>
                                 <table border="1">
                                     <tr>
                                         <th>Hotel Name</th>
@@ -133,10 +139,11 @@
                         </div>
                     </div>
             </div>
-            <div class="col-md-12">
+
+            <div class="col-md-4">
                     <div class="card" id="card-container-layout">
                         <div class="card-body" id="card">
-                            <h3>Available Rooms</h3>
+                            <h4>Available Rooms</h4>
                                 <table border="1">
                                     <tr>
                                         <th>Area</th>
@@ -176,7 +183,7 @@
             <div class="col-md-4">
                 <div class="card" id="card-container-layout">
                         <div class="card-body" id="card">
-                            <h4 class="card-title">Renting</h4>
+                            <h4 class="card-title" style="color: red;">Renting</h4>
                             <p class="card-text" id="paragraph">Renting management<br></p>
                             <a class="btn btn-primary" id="show-btn" href="renting.jsp">View</a>
                         </div>
@@ -188,6 +195,15 @@
                             <h4 class="card-title">Customer</h4>
                             <p class="card-text" id="paragraph">Customer management<br></p>
                             <a class="btn btn-primary" id="show-btn" href="customer.jsp">View</a>
+                        </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card" id="card-container-layout">
+                        <div class="card-body" id="card">
+                            <h4 class="card-title">Employee</h4>
+                            <p class="card-text" id="paragraph">Employee management<br></p>
+                            <a class="btn btn-primary" id="show-btn" href="employee.jsp">View</a>
                         </div>
                 </div>
             </div>

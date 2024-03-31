@@ -5,18 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cae8d09f-d768-411a-a865-9151d6bf0617" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/demo/Employee.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/demo/EmployeeService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/employee.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/demo/Hotel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/demo/Hotel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/demo/HotelService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/demo/HotelService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/demo/RoomService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/demo/RoomService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/demo/BookingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/demo/BookingService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/booking.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/booking.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/hotel.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/hotel.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/index.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/navbar.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/navbar.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/renting.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/renting.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/demo/Hotel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/demo/Hotel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/demo/HotelService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/demo/HotelService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/demo/RoomService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/demo/RoomService.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

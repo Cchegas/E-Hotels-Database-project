@@ -83,4 +83,43 @@ public class BookingService {
         }
         return bookings;
     }
+
+
+
+    public  List<Object[]>  getUserBookings(int userID) throws Exception {
+
+        List<Object[]> dataList = new ArrayList<>();
+
+        String sql = "SELECT b.*, r.roomNumber, h.name\n" +
+                "       FROM booking b\n" +
+                "       JOIN rooms r ON b.roomID = r.roomID\n" +
+                "       JOIN hotels h ON r.hotelID = h.hotelID\n" +
+                "       where customerid=?;";
+
+        // Connection object
+        ConnectionDB db = new ConnectionDB();
+
+        try (Connection connection = db.getConnection()){
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, userID);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                dataList.add(new Object[]{
+                        resultSet.getInt("bookingID"),
+                        resultSet.getString("name"),
+                        resultSet.getString("roomnumber"),
+                        resultSet.getDate("startdate"),
+                        resultSet.getDate("enddate"),
+                        resultSet.getDouble("depositamount")});
+            }
+            //return rooms;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return dataList;
+    }
+
+
+
 }

@@ -209,9 +209,6 @@
 </div>
 
 
-
-
-
  <!-- Hidden Check In Form -->
  <div id="checkinForm" class="update-form">
      <form action="renting.jsp" method="post">
