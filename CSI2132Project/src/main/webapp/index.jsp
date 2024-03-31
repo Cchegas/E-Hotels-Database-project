@@ -120,30 +120,11 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
-                    <div class="card" id="card-container-layout">
-                        <div class="card-body" id="card">
-                            <h4>Hotel Capacity</h4>
-                                <table border="1">
-                                    <tr>
-                                        <th>Hotel Name</th>
-                                        <th>Total Capacity</th>
-                                     </tr>
-                                <% for (Object[] room : rooms) {  %>
-                                    <tr>
-                                        <td><%= room[0] %></td>
-                                        <td><%= room[1] %></td>
-                                    </tr>
-                                    <% } %>
-                                </table>
-                        </div>
-                    </div>
-            </div>
 
             <div class="col-md-4">
                     <div class="card" id="card-container-layout">
                         <div class="card-body" id="card">
-                            <h4>Available Rooms</h4>
+                            <h5>View1: Number of available rooms per area</h5>
                                 <table border="1">
                                     <tr>
                                         <th>Area</th>
@@ -160,6 +141,25 @@
                     </div>
             </div>
 
+            <div class="col-md-4">
+                    <div class="card" id="card-container-layout">
+                        <div class="card-body" id="card">
+                            <h5>View2: Aggregated capacity of all the rooms per hotel</h5>
+                                <table border="1">
+                                    <tr>
+                                        <th>Hotel Name</th>
+                                        <th>Total Capacity</th>
+                                     </tr>
+                                <% for (Object[] room : rooms) {  %>
+                                    <tr>
+                                        <td><%= room[0] %></td>
+                                        <td><%= room[1] %></td>
+                                    </tr>
+                                    <% } %>
+                                </table>
+                        </div>
+                    </div>
+            </div>
 
             <% } else if (userID<0) { %>
             <div class="col-md-4">

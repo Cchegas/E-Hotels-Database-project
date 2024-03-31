@@ -22,10 +22,10 @@
     Date searchStartDate = Date.valueOf(LocalDate.now());
     Date searchEndDate = Date.valueOf(LocalDate.now().plusDays(1));
     double maxPrice = 1000.00;
-    int roomCapacity = 2;
+    int roomCapacity = 1;
     String area = "Ottawa";
     int hotelChainID = 1;
-    int hotelCategory = 3;
+    int hotelCategory = 1;
     int numRooms = 1;
 
     // Retrieve rooms based on search criteria
@@ -74,6 +74,45 @@
 <html>
 <head>
     <title>Booking Management</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Styled Form</title>
+    <style>
+        /* Style for the container div */
+        .form-container {
+                background-color: #f0f0f0; /* Background color */
+                padding: 20px; /* Padding around the form */
+                border-radius: 10px; /* Rounded corners */
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
+                width: 300px; /* Adjust width as needed */
+                margin: 0 auto; /* Center the container horizontally */
+                margin-left: 20px; /* Align to the left */
+        }
+
+        /* Style for the form elements */
+        .form-container form input[type="text"],
+        .form-container form input[type="email"],
+        .form-container form textarea {
+            width: 40%; /* Make form inputs full width */
+            padding: 5px; /* Padding inside the input box */
+            margin: 0px 0; /* Margin around the input box */
+            box-sizing: border-box;
+        }
+
+        .form-container form input[type="submit"] {
+            background-color: #4CAF50; /* Green submit button */
+            color: white; /* Text color */
+            padding: 10px 20px; /* Padding */
+            border: none; /* Remove border */
+            border-radius: 4px; /* Rounded corners */
+            cursor: pointer; /* Cursor on hover */
+            width: 100%; /* Make button full width */
+        }
+
+        .form-container form input[type="submit"]:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+    </style>
 </head>
 <body>
 <jsp:include page="navbar.jsp"/>
@@ -85,14 +124,15 @@
     <!-- Search Rooms -->
     <div style="flex: 1; padding-right: 20px;">
         <h2>Search Rooms</h2>
+        <div class="form-container">
         <form action="booking.jsp" method="post">
             <input type="hidden" id="searchAction" name="action" value="search">
             <input type="hidden" name="username" value="<%= userID %>">
 
             Start Date: <input type="date" name="searchStartDate" value="<%= searchStartDate %>"><br>
-            End Date: <input type="date" name="searchEndDate" value="<%= searchEndDate %>"><br>
+            End   Date: <input type="date" name="searchEndDate" value="<%= searchEndDate %>"><br>
             Max Price: <input type="text" name="maxPrice" value="<%= maxPrice %>"><br>
-            Room Capacity: <input type="text" name="roomCapacity" value="<%= roomCapacity %>"><br>
+            Min Capacity: <input type="text" name="roomCapacity" value="<%= roomCapacity %>"><br>
             Area:
                  <select name="area">
                      <%
@@ -111,7 +151,7 @@
                      <option value="<%= (int) data[0] %>"  <% if(hotelChainID== (int) data[0]) { %> selected <% } %> ><%= (String) data[1] %> </option>
                      <% } %>
                  </select><br>
-            Hotel Category:
+            Hotel Category (Min. Star):
                 <select name="hotelCategory">
                     <option value="1" <% if(hotelCategory==1) { %> selected <% } %>>1</option>
                     <option value="2" <% if(hotelCategory==2) { %> selected <% } %>>2</option>
@@ -119,22 +159,24 @@
                     <option value="4" <% if(hotelCategory==4) { %> selected <% } %>>4</option>
                     <option value="5" <% if(hotelCategory==5) { %> selected <% } %>>5</option>
                 </select><br>
-            Number of Rooms: <input type="text" name="numRooms" value="<%= numRooms %>"><br>
+            Min Number of Rooms: <input type="text" name="numRooms" value="<%= numRooms %>"><br>
             <input type="submit" value="Search">
         </form>
+        </div>
 
         <h3>Available Rooms</h3>
         <table border="1">
             <tr>
                 <th>Room ID</th>
                 <th>Hotel Name</th>
-                <th>Room Number</th>
+                <th>Room No.</th>
                 <th>Price</th>
                 <th>Capacity</th>
                 <th>Views</th>
                 <th>Problems</th>
                 <th>Pet Friendly</th>
                 <th>Hotel Address</th>
+                <th>Stars</th>
                 <th>Action</th>
              </tr>
         <% for (Object[] room : rooms) {  %>
@@ -148,6 +190,7 @@
                 <td><%= room[6] %></td>
                 <td><%= room[7] %></td>
                 <td><%= room[9] %></td>
+                <td><%= room[10] %></td>
                     <td>
                         <button onclick="openBookingForm('<%= (int) room[0] %>', '<%= searchStartDate %>', '<%= searchEndDate %>')">Book</button>
                     </td>
@@ -203,7 +246,7 @@
             <tr>
                 <th>Booking ID</th>
                 <th>Hotel</th>
-                <th>Room Number</th>
+                <th>Room No.</th>
                 <th>Start Date</th>
                 <th>End Date</th>
                 <th>Deposit Amount</th>

@@ -112,12 +112,12 @@ public class RoomService {
         List<Object[]> dataList = new ArrayList<>();
 
         // SQL query
-        String sql = "SELECT r.* , h.name, h.address, h.category, h.numberofrooms , h.chainid\n" +
+        String sql = "SELECT r.* , h.name, h.area, h.address,  h.category, h.numberofrooms , h.chainid\n" +
                 "           FROM rooms r JOIN hotels h ON r.hotelid = h.hotelid\n" +
                 "           WHERE   chainid =? AND\n" +
                 "                   numberofrooms >=? AND\n" +
-                "                   category = ? AND\n" +
-                "                   capacity =? AND \n" +
+                "                   category >= ? AND\n" +
+                "                   capacity >=? AND \n" +
                 "                   price<=? AND\n" +
                 "                   r.roomid NOT IN (\n" +
                 "                       SELECT DISTINCT b.roomid FROM booking b\n" +
@@ -125,10 +125,6 @@ public class RoomService {
                 "                               ( b.enddate > ? AND b.enddate <= ?))\n" +
                 "                   );";
 
-
-
-      //  WHERE ( b.startdate >= ? AND b.startdate <= ?)
-        // String sql = "SELECT * FROM rooms";
 
         // Connection object
         ConnectionDB db = new ConnectionDB();
@@ -149,7 +145,7 @@ public class RoomService {
 
             while (resultSet.next()) {
 
-                if (1>0){
+                if (resultSet.getString("area").equals(area) && !resultSet.getBoolean("problems")){
                     dataList.add(new Object[]{
                             resultSet.getInt("roomID"),
                             resultSet.getInt("hotelID"),
@@ -160,7 +156,9 @@ public class RoomService {
                             resultSet.getBoolean("problems"),
                             resultSet.getBoolean("petFriendly"),
                             resultSet.getString("name"),
-                            resultSet.getString("address")});
+                            resultSet.getString("address"),
+                            resultSet.getString("category")
+                    });
                 }
             }
             //return rooms;
