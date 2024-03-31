@@ -2,6 +2,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.demo.RoomService" %>
 <%@ page import="com.demo.Room" %>
+<%@ page import="com.demo.HotelService" %>
+<%@ page import="com.demo.Hotel" %>
 
 <%
     // Create an instance of RoomService
@@ -47,6 +49,11 @@
 
     // Get all rooms
     List<Room> rooms = roomService.getAllRooms();
+
+
+        // Ge all hotels
+        HotelService hotelService = new HotelService();
+        List<Hotel> hotels = hotelService.getAllHotels();
 %>
 
 <!DOCTYPE html>
@@ -56,18 +63,27 @@
     <title>Room Management</title>
 </head>
 <body>
+    <jsp:include page="navbar.jsp"/>
+
     <h1>Room Management</h1>
 
     <!-- Form for inserting a new room -->
     <h2>Add a New Room</h2>
     <form action="room.jsp" method="post">
-        Hotel ID: <input type="text" name="hotelID" required><br>
+        Hotel:
+                    <select name="hotelID">
+                        <%
+                            for (Hotel hotel : hotels) {
+                        %>
+                        <option value="<%= hotel.getHotelID() %>"> <%= hotel.getName() %> </option>
+                        <% } %>
+                    </select><br>
         Room Number: <input type="text" name="roomNumber" required><br>
         Price: <input type="text" name="price" required><br>
         Capacity: <input type="text" name="capacity" required><br>
         Views: <input type="text" name="views" required><br>
-        Problems: <input type="text" name="problems" required><br>
-        Pet Friendly: <input type="text" name="petFriendly" required><br>
+        Problems: <input type="checkbox" id="problems" name="problems"  value="true" ><br>
+        Pet Friendly: <input type="checkbox" id="petFriendly" name="petFriendly"  value="true"><br>
         <input type="hidden" name="action" value="insert">
         <input type="submit" value="Add Room">
     </form>
@@ -111,7 +127,7 @@
         <% } %>
     </table>
 
-    <!-- Hidden Update Form -->
+    <!-- Hidden Update Form:      -->
     <div id="updateForm" class="update-form">
         <form action="room.jsp" method="post">
             <input type="hidden" id="updateAction" name="action" value="update">

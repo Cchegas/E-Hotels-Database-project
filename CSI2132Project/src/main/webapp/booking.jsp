@@ -25,7 +25,7 @@
     int roomCapacity = 2;
     String area = "Ottawa";
     int hotelChainID = 1;
-    int hotelCategory = 1;
+    int hotelCategory = 3;
     int numRooms = 1;
 
     // Retrieve rooms based on search criteria

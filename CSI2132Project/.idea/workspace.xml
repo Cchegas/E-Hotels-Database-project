@@ -5,14 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cae8d09f-d768-411a-a865-9151d6bf0617" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/demo/Employee.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/demo/EmployeeService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/employee.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hotelManagement.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/demo/BookingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/demo/BookingService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db-project-demo.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/OldIndex.jsp.bak" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/booking.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/booking.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/index.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/customer.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/customer.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/delete-grade-controller.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/employee.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/employee.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/grades.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/hotel.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/hotel.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/insert-student-controller.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/insert-student.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/navbar.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/navbar.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/renting.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/renting.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/room.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/room.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/students.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/update-student-controller.jsp" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,6 +74,9 @@
   }
 }</component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Yong\Bradley\DatabaseGithub\CSI-2132-DATABASE-PROJECT-\CSI2132Project" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
     </key>

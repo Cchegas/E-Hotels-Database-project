@@ -53,6 +53,8 @@
     <title>Employee Management</title>
 </head>
 <body>
+    <jsp:include page="navbar.jsp"/>
+
     <h1>Employee Management</h1>
 
     <!-- Form for inserting a new employee -->

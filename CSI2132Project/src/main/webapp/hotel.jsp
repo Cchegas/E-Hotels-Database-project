@@ -57,14 +57,32 @@
     <title>Hotel Management</title>
 </head>
 <body>
+    <jsp:include page="navbar.jsp"/>
+
     <h1>Hotel Management</h1>
 
     <!-- Form for inserting a new hotel -->
     <h2>Add a New Hotel</h2>
     <form action="hotel.jsp" method="post">
-        Chain ID: <input type="text" name="chainID" required><br>
-        Name: <input type="text" name="name" required><br>
-        Category: <input type="text" name="category" required><br>
+        Hotel Chain:
+                 <select name="chainID">
+                     <%
+                         List<Object[]> dataList = hotelService.getAllHotelsChain();
+                         for (Object[] data : dataList) {
+                     %>
+                     <option value="<%= (int) data[0] %>"> <%= (String) data[1] %> </option>
+                     <% } %>
+                 </select><br>
+
+        Hotel Name: <input type="text" name="name" required><br>
+        Hotel Category:
+                <select name="category">
+                    <option value="1" >1</option>
+                    <option value="2" >2</option>
+                    <option value="3" selected>3</option>
+                    <option value="4" >4</option>
+                    <option value="5" >5</option>
+                </select><br>
         Number of Rooms: <input type="text" name="numberOfRooms" required><br>
         Address: <input type="text" name="address" required><br>
         Area: <input type="text" name="area" required><br>

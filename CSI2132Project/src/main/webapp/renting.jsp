@@ -78,6 +78,7 @@
     <title>Renting and Check in</title>
 </head>
 <body>
+    <jsp:include page="navbar.jsp"/>
 
 <h1>Booking Management</h1>
 
