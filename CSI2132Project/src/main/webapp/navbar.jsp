@@ -10,7 +10,7 @@
 <body>
 <nav class="navbar navbar-light navbar-expand-md" id="nav-bar">
     <div id="navbar-div" class="container-fluid">
-        <a class="navbar-brand" id="nav-bar-text" href="#">CSI2132 Project 2024</a>
+        <a class="navbar-brand" id="nav-bar-text" >CSI2132 Project 2024</a>
         <a id="navbar-items" href="<%=request.getContextPath()%>">
             <i class="fa fa-home "></i> Home
         </a>

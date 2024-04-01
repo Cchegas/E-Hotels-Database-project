@@ -42,6 +42,10 @@
     RoomService roomService= new RoomService();
     List<Object[]> rooms = roomService.getHotelCapacity();
     List<Object[]> availableRooms = roomService.getHotelCounts();
+
+
+    //
+
 %>
 
 <!DOCTYPE html>
@@ -74,13 +78,14 @@
                             List<Customer> customers = customerService.getAllCustomers();
                             for (Customer customer : customers) {
                         %>
-                        <option value="<%= customer.getCustomerID() %>"><%= customer.getFirstName() %> <%= customer.getLastName() %></option>
+                        <option value= "  <%= customer.getFirstName() +  " , " +  customer.getLastName() +  " , " + customer.getCustomerID() %> "  ><%= customer.getFirstName() %> <%= customer.getLastName() %></option>
                         <% } %>
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary">Customer Login</button>
             </form>
         </div>
+
 
                 <div class="col-md-4">
                     <form action="index.jsp" method="post">
@@ -93,7 +98,7 @@
                     <label for="username1" class="form-label">Employee Login:</label>
                 </div>
                 Password: <input type="text" name="fakepassword" value="********"> <br>
-                <input type="hidden" id="EmployeeLogin" name="customerID" value="-1">
+                <input type="hidden" id="EmployeeLogin" name="customerID" value="-1, -1, -1">
                 <button type="submit" class="btn btn-primary">Employee Login</button>
             </form>
         </div>
@@ -103,19 +108,24 @@
 
     <%-- Check if username is user1 or user2 to enable/disable features --%>
     <% if (request.getParameter("customerID") != null) {
-        int userID = Integer.parseInt(request.getParameter("customerID"));
+        //int userID = Integer.parseInt(request.getParameter("customerID"));
+         //  int   userID=10;
+        String[] fullName = request.getParameter("customerID").split(",");
+        String firstName = fullName[0];
+        String lastName = fullName[1];
+        int userID= Integer.parseInt(fullName[2].trim());
     %>
 
     <div class="container mt-5">
         <div class="row">
             <% if (userID>0) { %>
-
+            <h3>Current User: <%= firstName +" "+ lastName %>  </h3>
             <div class="col-md-4">
                 <div class="card" id="card-container-layout">
                     <div class="card-body" id="card">
                         <h4 class="card-title" style="color: red;">Booking</h4>
                         <p class="card-text" id="paragraph">Customer Booking<br></p>
-                        <a class="btn btn-primary" id="show-btn" href="booking.jsp?username=<%= request.getParameter("customerID") %>">My Booking</a>
+                        <a class="btn btn-primary" id="show-btn" href="booking.jsp?username=<%= userID %>">My Booking</a>
                     </div>
                 </div>
             </div>
@@ -160,6 +170,7 @@
                         </div>
                     </div>
             </div>
+
 
             <% } else if (userID<0) { %>
             <div class="col-md-4">
